@@ -1,2 +1,1 @@
-# GUH_24
-The hackathon challenge github
+this will where our great awesome idea will come to life :D
