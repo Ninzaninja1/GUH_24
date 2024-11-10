@@ -4,7 +4,6 @@ import streamlit as st
 import streamlit.components.v1 as components
 import PyPDF2
 from openai import OpenAI
-import ast
 
 # Disable the sidebar
 st.set_option("client.showSidebarNavigation", False)
@@ -96,33 +95,33 @@ Take into account the dream career that this person wants to achieve, which is {
     response_text = completion.choices[0].message.content
 
     container = st.container(border=True)
-    # container.markdown(response_text)
+    container.markdown(response_text)
 
     # Split the response into different stages based on the word "Age"
-    stages = response_text.split("Age")
+    #stages = response_text.split("Age")
     
-    # Remove any empty sections that may appear after splitting
-    stages = [stage.strip() for stage in stages if stage.strip()]
+    ## Remove any empty sections that may appear after splitting
+    #stages = [stage.strip() for stage in stages if stage.strip()]
 
-    # Create a dictionary to store each stage as a variable
-    stages_dict = {}
+    ## Create a dictionary to store each stage as a variable
+    #stages_dict = {}
 
-    last_section = ""
-    # Assign each stage to a separate variable in the dictionary
-    for i, stage in enumerate(stages):
-        stages_dict[f"interval_{i+1}"] = stage
+    #last_section = ""
+    ## Assign each stage to a separate variable in the dictionary
+    #for i, stage in enumerate(stages):
+    #    stages_dict[f"interval_{i+1}"] = stage
 
-    # remove the introduction
-    stages_dict.pop('interval_0', None)
+    ## remove the introduction
+    #stages_dict.pop('interval_0', None)
 
-    # Loop through each stage variable and display it inside a box
-    for key, stage in stages_dict.items():
-        with st.container():
-            # Use a div with the custom class to apply the styles
-            st.markdown(f"""
-            <div class="custom-container">
-                <p>{stage}</p></div>
-            """, unsafe_allow_html=True)
+    ## Loop through each stage variable and display it inside a box
+    #for key, stage in stages_dict.items():
+    #    with st.container():
+    #        # Use a div with the custom class to apply the styles
+    #        st.markdown(f"""
+    #        <div class="custom-container">
+    #            <p>{stage}</p></div>
+    #        """, unsafe_allow_html=True)
 
     # Combine the last section with the image generation prompt
     prompt = f"Create an image which shows a group of people (male and female, and from every race) who look professional and whose description matches with the profile specified in the following text file. The description should be based on the career path outlined below (don't include any text in the created image):\n\n{dream_career}"
