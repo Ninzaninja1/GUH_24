@@ -9,6 +9,17 @@ import ast
 # Disable the sidebar
 st.set_option("client.showSidebarNavigation", False)
 
+st.markdown(
+    '''
+    <style>
+    .stApp {
+    background-image: url("https://www.nwophysics.nl/sites/nwo_physics/files/styles/twitter/public/media-images/Achtergrond_tool_1920x1080.png?h=d1cb525d&itok=pKBvm8Dc")!important;
+    background-size: cover!important;    
+    }
+    </style>
+    ''',
+    unsafe_allow_html=True
+)
 # Page title
 st.title("Have a goal? We will get you there.")
 
@@ -41,13 +52,9 @@ col1, col2 = st.columns([5,3])  # Creates two equal-width columns
 with col1:
     components.html(html_contents)
 with col2:
-    dream_career = st.text_input("",placeholder="a GUH Hacker!")
+    dream_career = st.text_input("Career role",label_visibility="hidden",placeholder="a GUH Hacker!")
 
 pdf_text = ""
-with open('prompt.txt', 'r') as file:
-    # Read the entire content of the file into a variable
-    propmpt_text = file.read()
-
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
         pdf_text += extract_pdf_text(file)
@@ -59,13 +66,8 @@ if st.button("Get your career path!") and uploaded_files:
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": f"""Map a career path for this person, aged {age}. Start with a brief introduction of what this person does right now, like this person's name, age, current education or work status, and what experiences and technical skills this person has, based on the information provided below (under "Extra Information"), which are their current CV and LinkedIn profile.
-
-Extra information:
-
-{pdf_text}
-
-Here is what I want you to do: take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer.
+                "content": f"""Map a career path for this person, aged {age}.
+Here is what I want you to do: take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer. Display it only according to the format "Age [] \\nSummary:[]", where the two placeholders denoted by [], are the age range, and the content. Then, summarise the career path.
 """
             }
         ]
@@ -76,43 +78,80 @@ Here is what I want you to do: take into account the dream career that this pers
     container = st.container(border=True)
     #container.markdown(response_text)
 
-# Function to split and save each interval as a variable
-def split_and_save_intervals(response_text):
-    # Split the response into different stages based on the word "Interval"
-    stages = response_text.split("Interval")
+    # Split the response into different stages based on the word "Age"
+    stages = response_text.split("Age")
     
     # Remove any empty sections that may appear after splitting
     stages = [stage.strip() for stage in stages if stage.strip()]
-    
+
     # Create a dictionary to store each stage as a variable
     stages_dict = {}
-    
+
+    last_section = ""
     # Assign each stage to a separate variable in the dictionary
     for i, stage in enumerate(stages):
         stages_dict[f"interval_{i+1}"] = stage
-    
-    return stages_dict
+        if (i == (stages_dict.len() - 1)) {
+            last_section = stage 
+        }
 
-# Function to display the saved variables in separate boxes
-def display_stages(stages_dict):
+    # remove the introduction
+    stages_dict.pop('interval_0', None)
+
     # Loop through each stage variable and display it inside a box
-    for key, stage in stages_dict.items():
-        # HTML for the box style
-        html = f"""
-        <div style="background-color: #f9f9f9; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <h4 style="color: #333; font-size: 1.2em; font-weight: bold;">{key}</h4>
-            <p style="color: #555; line-height: 1.6;">{stage}</p>
-        </div>
-        """
-        # Display the HTML content in the Streamlit app
-        components.html(html, height=300)
-    # To extract only the last part of the response_text (the career path output)
-    # Let's assume the response is split by new lines, and we only need the last paragraph or section
-    response_sections = response_text.split("\n")
-    last_section = response_sections[-1]  # This takes the last section or paragraph
+    for key, stage in stages_dict.items():hexagon_html = """
+<div class="rounded-hexagon">
+    <div class="hex-text">stage</div>
+</div>
+
+<style>
+    .rounded-hexagon {
+        width: 200px;
+        height: 115px;
+        background-color: #4CAF50; /* Green color */
+        position: relative;
+        margin: 50px auto;
+        border-radius: 20px; /* Rounded corners */
+        transform: rotate(30deg); /* Rotate to make the shape a hexagon */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Creating the top and bottom triangles for a hexagon */
+    .rounded-hexagon::before,
+    .rounded-hexagon::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        border-left: 100px solid transparent;
+        border-right: 100px solid transparent;
+    }
+
+    .rounded-hexagon::before {
+        border-bottom: 58px solid #4CAF50;
+        top: -58px;
+    }
+
+    .rounded-hexagon::after {
+        border-top: 58px solid #4CAF50;
+        bottom: -58px;
+    }
+
+    /* Style for the text inside the hexagon */
+    .hex-text {
+        transform: rotate(-30deg); /* Counteract the hexagon rotation */
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+    }
+</style>
+"""
+
+
 
     # Combine the last section with the image generation prompt
-    prompt = f"Create an image which shows a group of people (male and female, and from every race) who look professional and whose description matches with the profile specified in the following text file. The description should be based on the career path outlined below (don't include any text in the created image):\n\n{last_section}"
+    prompt = f"Create an image which shows a group of people (male and female, and from every race) who look professional and whose description matches with the profile specified in the following text file. The description should be based on the career path outlined below (don't include any text in the created image):\n\n{response_text}"
     
     # Generate an image based on the career profile described in the last section
     response = client.images.generate(
