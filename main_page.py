@@ -41,8 +41,9 @@ with col1:
     components.html(html_contents)
 with col2:
     dream_career = st.text_input("______")
+    st.text_input("be an GUH Hacker!",label_visibility="hidden")
 
-# confirm that button has been pressed and files uploaded
+
 pdf_text = ""
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
