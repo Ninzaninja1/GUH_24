@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import streamlit as st
+import streamlit.components.v1 as components
 import PyPDF2
 from openai import OpenAI
 
@@ -8,7 +9,20 @@ from openai import OpenAI
 st.set_option("client.showSidebarNavigation", False)
 
 # Page title
-st.markdown("# Get your life planned to make you feel better.")
+st.title("Have a goal? We will get you there.")
+
+# Making Page Background
+st.markdown (
+    '''
+    <style>
+    .stApp {
+    background-image: url("https://img.freepik.com/free-vector/gradient-colored-wavy-background_23-2148397558.jpg?t=st=1731200427~exp=1731204027~hmac=5508c8b49539ac9e21d3eea90e47fbbf57b15e0f3e37fb4f52c5a8b5953beb7b&w=900")!important;
+    background-size: cover!important;    
+    }
+    </style>
+    ''',
+    unsafe_allow_html=True
+)
 
 # File uploader for user to upload PDF files
 uploaded_files = st.file_uploader(
@@ -29,7 +43,14 @@ def extract_pdf_text(uploaded_file):
             text += page.extract_text()
         return text
 
-name = st.text_input("I want to be a...", placeholder="Software Engineer")
+# name = st.text_input("I want to be a...", placeholder="Software Engineer"
+
+html_file = 'myhtml.html'
+
+with open(html_file, 'r') as file:
+    html_contents = file.read()
+
+components.html(html_contents)
 
 pdf_text = ""
 if st.button("Get your career path!") and uploaded_files:
