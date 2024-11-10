@@ -36,12 +36,11 @@ def extract_pdf_text(uploaded_file):
 html_file = 'myhtml.html'
 with open(html_file, 'r') as file:
     html_contents = file.read()
-col1, col2 = st.columns(2)  # Creates two equal-width columns
+col1, col2 = st.columns([5,4])  # Creates two equal-width columns
 with col1:
     components.html(html_contents)
 with col2:
-    dream_career = st.text_input("______")
-    st.text_input("be an GUH Hacker!",label_visibility="hidden")
+    dream_career = st.text_input("",placeholder="a GUH Hacker!")
 
 
 pdf_text = ""

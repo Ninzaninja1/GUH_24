@@ -15,20 +15,21 @@
     color: rgb(250, 250, 250);
   }
   .wrapper {
-    height: 60vh;
+    height: 40vh;
     /*This part is important for centering*/
     display: grid;
-    place-items: center;
+    place-items: end;
+    text-align: right;
   }
 
   .typing-demo {
     width: 22ch;
-    animation: typing 2s steps(22), blink .5s step-end infinite alternate;
+    animation: typing 2s steps(20), blink .5s step-end infinite alternate;
     white-space: nowrap;
     overflow: hidden;
     border-right: 3px solid;
     font-family: Roboto;
-    font-size: 2em;
+    font-size: 1.75em;
   }
 
   @keyframes typing {
