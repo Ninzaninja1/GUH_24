@@ -16,10 +16,14 @@ st.markdown(
     background-image: url("https://www.nwophysics.nl/sites/nwo_physics/files/styles/twitter/public/media-images/Achtergrond_tool_1920x1080.png?h=d1cb525d&itok=pKBvm8Dc")!important;
     background-size: cover!important;    
     }
+    .stTextInput label, .stFileUploader label {
+        color: white !important;
+    }
     </style>
     ''',
     unsafe_allow_html=True
 )
+
 # Page title
 st.title("Have a goal? We will get you there.")
 
@@ -66,8 +70,14 @@ if st.button("Get your career path!") and uploaded_files:
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": f"""Map a career path for this person, aged {age}.
-Here is what I want you to do: take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer. Display it only according to the format "Age [] \\nSummary:[]", where the two placeholders denoted by [], are the age range, and the content. Then, summarise the career path.
+                "content": f"""Map a career path for this person, aged {age}, based on the information provided below (under "Extra Information"), which are their current CV and LinkedIn profile.
+
+Extra information:
+```
+{pdf_text}
+```
+
+Take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer. Do not start with an introduction to my prompt.
 """
             }
         ]
@@ -76,7 +86,7 @@ Here is what I want you to do: take into account the dream career that this pers
     response_text = completion.choices[0].message.content
 
     container = st.container(border=True)
-    #container.markdown(response_text)
+    # container.markdown(response_text)
 
     # Split the response into different stages based on the word "Age"
     stages = response_text.split("Age")
@@ -91,67 +101,16 @@ Here is what I want you to do: take into account the dream career that this pers
     # Assign each stage to a separate variable in the dictionary
     for i, stage in enumerate(stages):
         stages_dict[f"interval_{i+1}"] = stage
-        if (i == (stages_dict.len() - 1)) {
-            last_section = stage 
-        }
 
     # remove the introduction
     stages_dict.pop('interval_0', None)
 
     # Loop through each stage variable and display it inside a box
-    for key, stage in stages_dict.items():hexagon_html = """
-<div class="rounded-hexagon">
-    <div class="hex-text">stage</div>
-</div>
-
-<style>
-    .rounded-hexagon {
-        width: 200px;
-        height: 115px;
-        background-color: #4CAF50; /* Green color */
-        position: relative;
-        margin: 50px auto;
-        border-radius: 20px; /* Rounded corners */
-        transform: rotate(30deg); /* Rotate to make the shape a hexagon */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Creating the top and bottom triangles for a hexagon */
-    .rounded-hexagon::before,
-    .rounded-hexagon::after {
-        content: "";
-        position: absolute;
-        width: 0;
-        border-left: 100px solid transparent;
-        border-right: 100px solid transparent;
-    }
-
-    .rounded-hexagon::before {
-        border-bottom: 58px solid #4CAF50;
-        top: -58px;
-    }
-
-    .rounded-hexagon::after {
-        border-top: 58px solid #4CAF50;
-        bottom: -58px;
-    }
-
-    /* Style for the text inside the hexagon */
-    .hex-text {
-        transform: rotate(-30deg); /* Counteract the hexagon rotation */
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-    }
-</style>
-"""
-
-
+    for key, stage in stages_dict.items():
+        st.markdown(stage)
 
     # Combine the last section with the image generation prompt
-    prompt = f"Create an image which shows a group of people (male and female, and from every race) who look professional and whose description matches with the profile specified in the following text file. The description should be based on the career path outlined below (don't include any text in the created image):\n\n{response_text}"
+    prompt = f"Create an image which shows a group of people (male and female, and from every race) who look professional and whose description matches with the profile specified in the following text file. The description should be based on the career path outlined below (don't include any text in the created image):\n\n{dream_career}"
     
     # Generate an image based on the career profile described in the last section
     response = client.images.generate(
