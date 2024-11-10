@@ -4,6 +4,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import PyPDF2
 from openai import OpenAI
+from datetime import datetime 
 
 # Disable the sidebar
 st.set_option("client.showSidebarNavigation", False)
@@ -35,6 +36,8 @@ st.markdown(
 st.title("Have a goal? We will get you there.")
 
 age = st.text_input("Age")
+current_datetime = datetime.now()
+current_year = current_datetime.year
 
 # Array with file objects
 uploaded_files = st.file_uploader(
@@ -79,7 +82,7 @@ if st.button("Get your career path!") and uploaded_files:
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": f"""Map a career path for this person, aged {age}, based on the information provided below (under "Extra Information"), which are their current CV and LinkedIn profile.
+                "content": f"""Map a career path for this person, aged {age} in the year {current_year}, based on the information provided below (under "Extra Information"), which are their current CV and LinkedIn profile.
 
 Extra information:
 ```
