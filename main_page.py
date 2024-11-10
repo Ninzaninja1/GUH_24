@@ -4,12 +4,21 @@ import streamlit as st
 import streamlit.components.v1 as components
 import PyPDF2
 from openai import OpenAI
+import base64
+
+def load_font_as_base64(font_path):
+    with open(font_path, "rb") as font_file:
+        return base64.b64encode(font_file.read()).decode()
+
+# Path to your local font file
+font_base64 = load_font_as_base64("fonts/Kola-Regular.ttf")
 
 # Disable the sidebar
 st.set_option("client.showSidebarNavigation", False)
 
 # Page title
 st.title("Have a goal? We will get you there.")
+
 
 # Making Page Background
 st.markdown (
@@ -24,12 +33,8 @@ st.markdown (
     unsafe_allow_html=True
 )
 
-<<<<<<< HEAD
-# File uploader for user to upload PDF files
-=======
 # File uploader +
 # r user to upload PDF files
->>>>>>> 3ae02f904ed12636252531573c781c1240187839
 uploaded_files = st.file_uploader(
     "Upload your CV and/or LinkedIn export",
     type=['pdf'],
@@ -48,17 +53,11 @@ def extract_pdf_text(uploaded_file):
             text += page.extract_text()
         return text
 
-# name = st.text_input("I want to be a...", placeholder="Software Engineer"
-
 html_file = 'myhtml.html'
 
 with open(html_file, 'r') as file:
     html_contents = file.read()
 
-<<<<<<< HEAD
-components.html(html_contents)
- 
-=======
 # Create two columns
 col1, col2 = st.columns(2)  # Creates two equal-width columns
 
@@ -68,10 +67,9 @@ with col1:
 
 # second column
 with col2:
-    st.text_input("______")
+    st.text_input("______", label_visibility="hidden")
 
 
->>>>>>> 3ae02f904ed12636252531573c781c1240187839
 pdf_text = ""
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
@@ -91,3 +89,11 @@ if st.button("Get your career path!") and uploaded_files:
 
     # Save in a shared variable between pages
     st.session_state['data'] = completion.choices[0].message
+
+container = st.container(border=True)
+container.markdown("# 1st Step Date")
+container.markdown("Hear from experts and peers, gain new ideas, and share experiences together.")
+
+container2 = st.container(border=True)
+container2.markdown("# 2nd Step Date")
+container2.markdown("Hear stories, get fresh ideas, and walk away with motivation to tackle challenges.")
