@@ -44,9 +44,7 @@ with col2:
     dream_career = st.text_input("",placeholder="a GUH Hacker!")
 
 pdf_text = ""
-with open('prompt.txt', 'r') as file:
-    # Read the entire content of the file into a variable
-    propmpt_text = file.read()
+
 
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
