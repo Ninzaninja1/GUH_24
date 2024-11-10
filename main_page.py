@@ -18,14 +18,16 @@ st.markdown(
     .stTextInput label, .stFileUploader label {
         color: white !important;
     }
-    .custom-container {
-        background-color: white;
-        color: black;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    
+    .title {
+        color: white;
+        font-size: 4em; /* Optional: Adjust the font size */
+        font-weight: bold;
     }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
     </style>
     ''',
     unsafe_allow_html=True
