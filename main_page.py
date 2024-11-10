@@ -25,10 +25,6 @@ st.markdown(
         font-weight: bold;
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
-    </style>
     ''',
     unsafe_allow_html=True
 )
