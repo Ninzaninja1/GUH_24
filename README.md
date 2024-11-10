@@ -2,7 +2,7 @@
 
 In this day and age, time is the most valuable currency. Everyone always has something to do, and would be willing to use a product that can cut down time wastage, and to increase our efficiency in day-to-day tasks. People need convenience, to have everything done by the click of a button. 
 
-University students are especially a key demographic of this growing problem. In between assignments, projects, societies, coursework, internship search and everything beyond, we present a solution to increase their convenience when it comes to their career. We eliminate the element of unknown, save their valuable time, and create a time machine: to let them travel into the future and envision a career path tailored just for them.
+University students are especially a key demographic of this growing problem. In between assignments, projects, societies, coursework, internship search and everything beyond, we present a solution to bridge the hap and overcome a key barrier when it comes to their career. We eliminate the element of unknown, save their valuable time, and create a time machine: to let them travel into the future and envision a career path tailored just for them.
 
 # The Solution
 
