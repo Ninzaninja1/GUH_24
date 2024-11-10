@@ -2,18 +2,33 @@
 <html lang="en">
 <div class="wrapper">
   <div class="typing-demo">
-    In the future I want to be
+    In the future I want to be a
   </div>
 </div>
 
 <style>
+  .rounded-hexagon {
+    width: 200px;
+    height: 200px;
+    background-color: #4CAF50;
+    /* Green color */
+    position: relative;
+    margin: 50px auto;
+    transform: rotate(30deg);
+    /* Rotate to make the shape a hexagon */
+    border-radius: 20px;
+    /* Rounded corners */
+  }
+
   .stApp {
     background-image: url("https://img.freepik.com/free-vector/gradient-colored-wavy-background_23-2148397558.jpg?t=st=1731200427~exp=1731204027~hmac=5508c8b49539ac9e21d3eea90e47fbbf57b15e0f3e37fb4f52c5a8b5953beb7b&w=900") !important;
     background-size: cover !important;
   }
+
   body {
     color: rgb(250, 250, 250);
   }
+
   .wrapper {
     height: 40vh;
     /*This part is important for centering*/
@@ -23,7 +38,7 @@
   }
 
   .typing-demo {
-    width: 22ch;
+    width: 26ch;
     animation: typing 2s steps(20), blink .5s step-end infinite alternate;
     white-space: nowrap;
     overflow: hidden;
@@ -43,8 +58,11 @@
       border-color: transparent
     }
   }
+
   .stTextInput input {
-        width: 200px;  /* Change the width to your desired size */
-    }
+    width: 200px;
+    /* Change the width to your desired size */
+  }
 </style>
+
 </html>

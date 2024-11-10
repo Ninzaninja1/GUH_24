@@ -4,6 +4,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import PyPDF2
 from openai import OpenAI
+import ast
 
 # Disable the sidebar
 st.set_option("client.showSidebarNavigation", False)
@@ -11,7 +12,7 @@ st.set_option("client.showSidebarNavigation", False)
 # Page title
 st.title("Have a goal? We will get you there.")
 
-age = st.text_input("Age:")
+age = st.text_input("Age")
 
 # Array with file objects
 uploaded_files = st.file_uploader(
@@ -36,14 +37,17 @@ def extract_pdf_text(uploaded_file):
 html_file = 'myhtml.html'
 with open(html_file, 'r') as file:
     html_contents = file.read()
-col1, col2 = st.columns([5,4])  # Creates two equal-width columns
+col1, col2 = st.columns([5,3])  # Creates two equal-width columns
 with col1:
     components.html(html_contents)
 with col2:
     dream_career = st.text_input("",placeholder="a GUH Hacker!")
 
-
 pdf_text = ""
+with open('prompt.txt', 'r') as file:
+    # Read the entire content of the file into a variable
+    propmpt_text = file.read()
+
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
         pdf_text += extract_pdf_text(file)
@@ -61,11 +65,36 @@ Extra information:
 
 {pdf_text}
 
-Here is what I want you to do: take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer.
+Here is what I want you to do: take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer. Display this sectioned out in a python dictionary.
 """
             }
         ]
     )
 
+    response_text = ast.literal_eval(completion.choices[0].message.content)
+
     container = st.container(border=True)
-    container.markdown(completion.choices[0].message.content)
+    #container.markdown(response_text)
+
+    st.write(response_text)
+
+    # To extract only the last part of the response_text (the career path output)
+    # Let's assume the response is split by new lines, and we only need the last paragraph or section
+    response_sections = response_text.split("\n")
+    last_section = response_sections[-1]  # This takes the last section or paragraph
+
+    # Combine the last section with the image generation prompt
+    prompt = f"Create an image which shows a group of people (male and female, and from every race) who look professional and whose description matches with the profile specified in the following text file. The description should be based on the career path outlined below (don't include any text in the created image):\n\n{last_section}"
+    
+    # Generate an image based on the career profile described in the last section
+    response = client.images.generate(
+      model="dall-e-3",
+      prompt=prompt,
+      size="1024x1024",
+      quality="standard",
+      n=1,
+    )
+    
+    # Display the image URL generated by DALL·E
+    image_url = response.data[0].url
+    st.image(image_url, caption="Career Path Representation", use_container_width=True)
