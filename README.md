@@ -20,4 +20,5 @@ We will then install the necessary packages.
 
 ```python
 pip install openai
+pip install streamlit
 ```
