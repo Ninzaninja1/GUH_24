@@ -65,19 +65,47 @@ Extra information:
 
 {pdf_text}
 
-Here is what I want you to do: take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer. Display this sectioned out in a python dictionary.
+Here is what I want you to do: take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer.
 """
             }
         ]
     )
 
-    response_text = ast.literal_eval(completion.choices[0].message.content)
+    response_text = completion.choices[0].message.content
 
     container = st.container(border=True)
     #container.markdown(response_text)
 
-    st.write(response_text)
+# Function to split and save each interval as a variable
+def split_and_save_intervals(response_text):
+    # Split the response into different stages based on the word "Interval"
+    stages = response_text.split("Interval")
+    
+    # Remove any empty sections that may appear after splitting
+    stages = [stage.strip() for stage in stages if stage.strip()]
+    
+    # Create a dictionary to store each stage as a variable
+    stages_dict = {}
+    
+    # Assign each stage to a separate variable in the dictionary
+    for i, stage in enumerate(stages):
+        stages_dict[f"interval_{i+1}"] = stage
+    
+    return stages_dict
 
+# Function to display the saved variables in separate boxes
+def display_stages(stages_dict):
+    # Loop through each stage variable and display it inside a box
+    for key, stage in stages_dict.items():
+        # HTML for the box style
+        html = f"""
+        <div style="background-color: #f9f9f9; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h4 style="color: #333; font-size: 1.2em; font-weight: bold;">{key}</h4>
+            <p style="color: #555; line-height: 1.6;">{stage}</p>
+        </div>
+        """
+        # Display the HTML content in the Streamlit app
+        components.html(html, height=300)
     # To extract only the last part of the response_text (the career path output)
     # Let's assume the response is split by new lines, and we only need the last paragraph or section
     response_sections = response_text.split("\n")
