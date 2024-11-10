@@ -19,6 +19,14 @@ st.markdown(
     .stTextInput label, .stFileUploader label {
         color: white !important;
     }
+    .custom-container {
+        background-color: white;
+        color: black;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
     </style>
     ''',
     unsafe_allow_html=True
@@ -107,7 +115,12 @@ Take into account the dream career that this person wants to achieve, which is {
 
     # Loop through each stage variable and display it inside a box
     for key, stage in stages_dict.items():
-        st.markdown(stage)
+        with st.container():
+            # Use a div with the custom class to apply the styles
+            st.markdown(f"""
+            <div class="custom-container">
+                <p>{stage}</p></div>
+            """, unsafe_allow_html=True)
 
     # Combine the last section with the image generation prompt
     prompt = f"Create an image which shows a group of people (male and female, and from every race) who look professional and whose description matches with the profile specified in the following text file. The description should be based on the career path outlined below (don't include any text in the created image):\n\n{dream_career}"
