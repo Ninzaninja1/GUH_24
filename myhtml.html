@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Box with Underline</title>
+    <style>
+        /* Style for the text input box */
+        .underline-input {
+            border: none;  /* Removes the default border */
+            border-bottom: 2px dashed #4CAF50; /* Green dashed underline */
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;  /* You can adjust the width as needed */
+            outline: none;  /* Removes the outline on focus */
+        }
+
+        /* Optional: Adding focus effect */
+        .underline-input:focus {
+            border-bottom: 2px solid #FF5733; /* Red solid underline when focused */
+        }
+    </style>
+</head>
+<body>
+    <h2>Text Box with Underline Example</h2>
+
+    <label for="name">Enter your name:</label><br>
+    <input type="text" id="name" class="underline-input" placeholder="Your Name">
+    
+</body>
+</html>
