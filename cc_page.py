@@ -4,14 +4,6 @@ import streamlit as st
 import streamlit.components.v1 as components
 import PyPDF2
 from openai import OpenAI
-import base64
-
-def load_font_as_base64(font_path):
-    with open(font_path, "rb") as font_file:
-        return base64.b64encode(font_file.read()).decode()
-
-# Path to your local font file
-font_base64 = load_font_as_base64("fonts/Kola-Regular.ttf")
 
 # Disable the sidebar
 st.set_option("client.showSidebarNavigation", False)
@@ -19,28 +11,9 @@ st.set_option("client.showSidebarNavigation", False)
 # Page title
 st.title("Have a goal? We will get you there.")
 
+age = st.text_input("Age:")
 
-# File uploader +
-
-# Making Page Background
-st.markdown (
-    '''
-    <style>
-    .stApp {
-    background-image: url("https://img.freepik.com/free-vector/gradient-colored-wavy-background_23-2148397558.jpg?t=st=1731200427~exp=1731204027~hmac=5508c8b49539ac9e21d3eea90e47fbbf57b15e0f3e37fb4f52c5a8b5953beb7b&w=900")!important;
-    background-size: cover!important;    
-    }
-    </style>
-    ''',
-    unsafe_allow_html=True
-)
-
-
-# File uploader for user to upload PDF files
-
-# File uploader +
-# r user to upload PDF files
-
+# Array with file objects
 uploaded_files = st.file_uploader(
     "Upload your CV and/or LinkedIn export",
     type=['pdf'],
@@ -59,26 +32,16 @@ def extract_pdf_text(uploaded_file):
             text += page.extract_text()
         return text
 
+# Starting of embedded html for fancy textbox
 html_file = 'myhtml.html'
-
 with open(html_file, 'r') as file:
     html_contents = file.read()
-
-
-components.html(html_contents)
- 
-
-# Create two columns
 col1, col2 = st.columns(2)  # Creates two equal-width columns
-
-# first column
 with col1:
     components.html(html_contents)
-
-# second column
 with col2:
-    st.text_input("______")
-
+    dream_career = st.text_input("______")
+    st.text_input("be an GUH Hacker!",label_visibility="hidden")
 
 
 pdf_text = ""
@@ -93,18 +56,50 @@ if st.button("Get your career path!") and uploaded_files:
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": f"Print the content of this document:\n\n{pdf_text}"
+                "content": f"""Map a career path for this person, aged {age}. Start with a brief introduction of what this person does right now, like this person's name, age, current education or work status, and what experiences and technical skills this person has, based on the information provided below (under "Extra Information"), which are their current CV and LinkedIn profile.
+
+Extra information:
+
+{pdf_text}
+
+Here is what I want you to do: take into account the dream career that this person wants to achieve, which is {dream_career}. Map a clear, detailed career path from this person's age to their dream career, with intervals. I want you to heavily utilise and consider their CV and LinkedIn profile above, by analysing their strengths and interests, and take them into serious consideration when mapping out their career path. Start with intervals of 6 months at first, then gradually increase the length of time for each interval, with a maximum of 10 years per interval, until this person can realistically achieve their dream career, and continue until retirement age. Be really careful when linking the age and the year. Use gender neutral pronouns when addressing this person. For each interval, give me this person's age and the year. List me 3 goals that this person needs to achieve during each stage, and what strategy this person needs to adopt to realistically achieve those goals. List me at least 4 technical skills this person needs, and how can this person learn these skills, by giving me specific courses and projects to do. Give me the general and relevant links to each of these courses and projects (the main webpage), but make sure that all the links work. Recommended internships or jobs for this person, and give me resources and advice on how this person can get those internships/jobs, along with the website links for this. Give me the expected salary. Give me at least 3 pros and cons for these career decisions, for every single stage of age. Give me essential career events to attend, and how can these person register for them. I want you to go into detail, a step-by-step analysis on how to achieve career goals and milestones, with it being very specific, detailed and well-explained, with as many important website URLs in the answer.
+"""
             }
         ]
     )
 
-    # Save in a shared variable between pages
-    st.session_state['data'] = completion.choices[0].message
+    response_text = completion.choices[0].message.content
 
-container = st.container(border=True)
-container.markdown("# 1st Step Date")
-container.markdown("Hear from experts and peers, gain new ideas, and share experiences together.")
+    container = st.container(border=True)
+    container.markdown(completion.choices[0].message.content)
 
-container2 = st.container(border=True)
-container2.markdown("# 2nd Step Date")
-container2.markdown("Hear stories, get fresh ideas, and walk away with motivation to tackle challenges.")
+# Function to split and save each interval as a variable
+def split_and_save_intervals(response_text):
+    # Split the response into different stages based on the word "Interval"
+    stages = response_text.split("Interval")
+    
+    # Remove any empty sections that may appear after splitting
+    stages = [stage.strip() for stage in stages if stage.strip()]
+    
+    # Create a dictionary to store each stage as a variable
+    stages_dict = {}
+    
+    # Assign each stage to a separate variable in the dictionary
+    for i, stage in enumerate(stages):
+        stages_dict[f"interval_{i+1}"] = stage
+    
+    return stages_dict
+
+# Function to display the saved variables in separate boxes
+def display_stages(stages_dict):
+    # Loop through each stage variable and display it inside a box
+    for key, stage in stages_dict.items():
+        # HTML for the box style
+        html = f"""
+        <div style="background-color: #f9f9f9; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h4 style="color: #333; font-size: 1.2em; font-weight: bold;">{key}</h4>
+            <p style="color: #555; line-height: 1.6;">{stage}</p>
+        </div>
+        """
+        # Display the HTML content in the Streamlit app
+        components.html(html, height=300)
