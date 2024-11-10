@@ -24,7 +24,8 @@ st.markdown (
     unsafe_allow_html=True
 )
 
-# File uploader for user to upload PDF files
+# File uploader +
+# r user to upload PDF files
 uploaded_files = st.file_uploader(
     "Upload your CV and/or LinkedIn export",
     type=['pdf'],
@@ -50,7 +51,17 @@ html_file = 'myhtml.html'
 with open(html_file, 'r') as file:
     html_contents = file.read()
 
-components.html(html_contents)
+# Create two columns
+col1, col2 = st.columns(2)  # Creates two equal-width columns
+
+# first column
+with col1:
+    components.html(html_contents)
+
+# second column
+with col2:
+    st.text_input("______")
+
 
 pdf_text = ""
 if st.button("Get your career path!") and uploaded_files:
