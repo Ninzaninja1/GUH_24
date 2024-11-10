@@ -4,8 +4,11 @@ import streamlit as st
 import PyPDF2
 from openai import OpenAI
 
+# Disable the sidebar
+st.set_option("client.showSidebarNavigation", False)
+
 # Page title
-st.markdown("# Main Page Woohooo")
+st.markdown("# Get your life planned to make you feel better.")
 
 # File uploader for user to upload PDF files
 uploaded_files = st.file_uploader(
@@ -26,7 +29,7 @@ def extract_pdf_text(uploaded_file):
             text += page.extract_text()
         return text
 
-name = st.text_input("What is your future career?")
+name = st.text_input("I want to be a...", placeholder="Software Engineer")
 
 pdf_text = ""
 if st.button("Get your career path!") and uploaded_files:
@@ -45,9 +48,5 @@ if st.button("Get your career path!") and uploaded_files:
         ]
     )
 
-    # Display the response in the Streamlit app
-    # st.write(completion.choices[0].message)
-
-    
-else:
-    st.write("Please upload a PDF file to continue.")
+    # Save in a shared variable between pages
+    st.session_state['data'] = completion.choices[0].message
