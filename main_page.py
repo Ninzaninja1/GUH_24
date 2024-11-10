@@ -19,9 +19,7 @@ st.set_option("client.showSidebarNavigation", False)
 # Page title
 st.title("Have a goal? We will get you there.")
 
-<<<<<<< HEAD
-# File uploader +
-=======
+
 # Making Page Background
 st.markdown (
     '''
@@ -35,13 +33,8 @@ st.markdown (
     unsafe_allow_html=True
 )
 
-<<<<<<< HEAD
-# File uploader for user to upload PDF files
-=======
 # File uploader +
 # r user to upload PDF files
->>>>>>> 3ae02f904ed12636252531573c781c1240187839
->>>>>>> b60ff4beb3909f65335574bb7c56ae61501434ce
 uploaded_files = st.file_uploader(
     "Upload your CV and/or LinkedIn export",
     type=['pdf'],
@@ -65,10 +58,6 @@ html_file = 'myhtml.html'
 with open(html_file, 'r') as file:
     html_contents = file.read()
 
-<<<<<<< HEAD
-components.html(html_contents)
- 
-=======
 # Create two columns
 col1, col2 = st.columns(2)  # Creates two equal-width columns
 
@@ -78,10 +67,9 @@ with col1:
 
 # second column
 with col2:
-    st.text_input("______")
+    st.text_input("______", label_visibility="hidden")
 
 
->>>>>>> 3ae02f904ed12636252531573c781c1240187839
 pdf_text = ""
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
