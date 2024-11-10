@@ -40,9 +40,13 @@ col1, col2 = st.columns(2)  # Creates two equal-width columns
 with col1:
     components.html(html_contents)
 with col2:
+<<<<<<< HEAD
     dream_career = st.text_input("______")
+=======
+>>>>>>> fc54085 (yeah)
+    st.text_input("be an GUH Hacker!",label_visibility="hidden")
 
-# confirm that button has been pressed and files uploaded
+
 pdf_text = ""
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
