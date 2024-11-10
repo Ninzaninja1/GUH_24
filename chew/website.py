@@ -67,6 +67,8 @@ Here is what I want you to do: take into account the dream career that this pers
     st.subheader("Career Path Output")
     st.write(response_text)
 
+<<<<<<< HEAD
+=======
  # Define a function to create bubble-style output with custom CSS
     def display_in_bubble(content, bg_color, text_color):
         st.markdown(f"""
@@ -82,6 +84,7 @@ Here is what I want you to do: take into account the dream career that this pers
     for section in sections:
         display_in_bubble(section, "#f0f8ff", "#333333")
 
+>>>>>>> 3ae02f904ed12636252531573c781c1240187839
     # Save the response text into a user-friendly text file
     with open("career_path_output.txt", "w", encoding="utf-8") as file:
         file.write(response_text)
