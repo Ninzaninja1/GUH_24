@@ -51,7 +51,7 @@ with open(html_file, 'r') as file:
     html_contents = file.read()
 
 components.html(html_contents)
-
+ 
 pdf_text = ""
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
