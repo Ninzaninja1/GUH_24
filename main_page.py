@@ -40,10 +40,7 @@ col1, col2 = st.columns(2)  # Creates two equal-width columns
 with col1:
     components.html(html_contents)
 with col2:
-<<<<<<< HEAD
     dream_career = st.text_input("______")
-=======
->>>>>>> fc54085 (yeah)
     st.text_input("be an GUH Hacker!",label_visibility="hidden")
 
 
