@@ -67,6 +67,8 @@ with col2:
     dream_career = st.text_input("Career role",label_visibility="hidden",placeholder="a GUH Hacker!")
 
 pdf_text = ""
+
+
 if st.button("Get your career path!") and uploaded_files:
     for file in uploaded_files:
         pdf_text += extract_pdf_text(file)
